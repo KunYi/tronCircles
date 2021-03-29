@@ -27,16 +27,16 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 	rotation += rotationSteps;
-	
+
 	if(ofGetElapsedTimef() - lastSwitch > 9 && !closing && !opening)
 	{
 		closing =true;
 		opening = false;
 	}
-		
+
 	if (closing) {
 		scale -=(scale) / 8;
-		
+
 		if(scale < 0.1)
 		{
 			createNewArcs();
@@ -44,7 +44,7 @@ void testApp::update(){
 			closing = false;
 		}
 	}
-	
+
 	if (opening) {
 		scale+=(1-scale) / 8;
 		if(scale > 0.99)
@@ -52,40 +52,40 @@ void testApp::update(){
 			scale = 1;
 			lastSwitch = ofGetElapsedTimef();
 			opening = false;
-		}			
+		}
 	}
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-		
+
 	if (ofGetElapsedTimef() < 10) {
 		ofSetColor(40, 100, 100);
-		
+
 		char fpsStr[255]; // an array of chars
-		
+
 		sprintf(fpsStr, "press [f] to \ntoggle fullscreen\nmove mouse horizontaly\nfor speed");
-		ofDrawBitmapString(fpsStr, ofGetWidth()/2 - 82,ofGetHeight()/2 - 30);		
+		ofDrawBitmapString(fpsStr, ofGetWidth()/2 - 82,ofGetHeight()/2 - 30);
 	}
-	
-	
+
+
 	// uncomment to see the frame - currently framerate limited to 60fps
 	/*
-	char fpsStr[255]; // an array of chars	
+	char fpsStr[255]; // an array of chars
 	sprintf(fpsStr, "frame rate: %f", ofGetFrameRate());
 	ofDrawBitmapString(fpsStr, 10,10);
 	*/
-	
+
 	glTranslatef(ofGetWidth()/2,ofGetHeight()/2,0);
 
 	ofScale(scale, scale, 1);
 
-	for (int i=0; i < nrOfCircles; i++) 
+	for (int i=0; i < nrOfCircles; i++)
 	{
 		arc* arcObject = arcs.at(i);
-		arcObject->draw(rotation);		
+		arcObject->draw(rotation);
 	}
-	
+
 	// create screenshot
 	if (bSnapshot == true){
 		screenGrabber.grabScreen(0,0,ofGetWidth(),ofGetHeight());
@@ -106,9 +106,9 @@ void testApp::createNewArcs()
 		delete arcs[i];
 	}
 	arcs.clear();
-	
+
 	nrOfCircles = 4 + ofRandom(70);
-	
+
 	float innerRadius = 100;
 	float angle=0;
 	float cirleAngle =0;
@@ -116,33 +116,33 @@ void testApp::createNewArcs()
 	float lineWidth = 10;
 	float margin = 0;
 	float circleStartAngle = 0;
-	
+
 	for (int i=0; i < nrOfCircles; i++) {
-		
+
 		arc* arcObject = new arc();
 		arcObject->innerRadius = innerRadius;
 		arcObject->outerRadius = innerRadius + lineWidth;
 
 		angle += ofRandom(0,10) > 2 ? 0.1 : 0;
 		arcObject->startAngle = angle;
-				
-		angle += ofRandom(0.2,4.5);		
+
+		angle += ofRandom(0.2,4.5);
 		arcObject->endAngle = angle;
-		
+
 		arcObject->clockwise = clockWise;
-		
+
 		// using negative random values to avoid to much coloring
 		arcObject->colorBlueStartFactor = ofClamp(ofRandom(-0.4,1.0), 0, 1);
 		arcObject->colorBlueEndFactor = ofClamp(ofRandom(-0.4,1.0), 0, 1);
 		arcObject->colorGreenCorrection = ofClamp(ofRandom(-0.4,0.1), 0, 1);
 
-				
+
 		if (angle >= ( TWO_PI + circleStartAngle  )) {
 			innerRadius += (margin + lineWidth) ;
-			
+
 			// do correction on last arc
 			arcObject->endAngle = TWO_PI + circleStartAngle ;
-			
+
 			angle= (angle - ( TWO_PI));
 			circleStartAngle = angle;
 			clockWise = ofRandom(10) > 5;
@@ -154,23 +154,23 @@ void testApp::createNewArcs()
 				lineWidth = 20;
 			}else {
 				lineWidth =10;
-			}		
+			}
 
 			//lineWidth = ofRandom(20) > 5 ? 10 : 20;
 
 			int marginRandom = ofRandom(0,20);
 
-			if(marginRandom > 6){ 
+			if(marginRandom > 6){
 				margin =0;
 			}
 			else if(marginRandom > 2){
-				margin =10;				
+				margin =10;
 			}else
 			{
-				margin =30;				
+				margin =30;
 			}
-		}	
-						
+		}
+
 		//cout << arcObject->startAngle << "  " << arcObject->endAngle << "   angle " << angle << "\n" ;
 
 		arcObject->createMesh();
@@ -230,6 +230,6 @@ void testApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){ 
+void testApp::dragEvent(ofDragInfo dragInfo){
 
 }

@@ -16,13 +16,13 @@ class arc{
 public:
 	float startAngle;
 	float endAngle;
-	
+
 	float innerRadius;
 	float outerRadius;
-		
+
 	bool clockwise;
 	int hexColor;
-	
+
 	float colorBlueStartFactor;
 	float colorBlueEndFactor;
 
@@ -33,7 +33,7 @@ public:
 	ofMesh meshOutline;
 	void draw(float rotation);
 	void createMesh();
-	
+
 	private:
 
 };

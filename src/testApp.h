@@ -19,8 +19,8 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-	
-	vector<arc*> arcs;	
+
+	vector<arc*> arcs;
 	void createNewArcs();
 	int snapCounter;
 	ofImage screenGrabber;

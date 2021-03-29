@@ -16,9 +16,9 @@ void arc::createMesh()
 	float angle;
 	// Use smaller steps on big circles
 	float angleSteps = 10 / innerRadius ;
-	
+
 	//mesh.setMode(ofPrimitive)
-	
+
 	mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
 	meshOutline.setMode(OF_PRIMITIVE_LINE_LOOP);
 
@@ -33,10 +33,10 @@ void arc::createMesh()
 
 	for (float angle = startAngle; angle <= endAngle; angle+=angleSteps){
 		colorBlue += colorBlueSteps;
-		
+
 		x = outerRadius * cos(angle);
-		y = outerRadius * sin(angle); 
-		
+		y = outerRadius * sin(angle);
+
 		// inner circle fill
 		mesh.addVertex(ofVec3f(x,y,0));
 		// adding the points for the border upper part
@@ -45,19 +45,21 @@ void arc::createMesh()
 		//mesh.addColor(ofColor(0,colorBlue ,colorBlue- colorGreenCorrection));
 		mesh.addColor(ofFloatColor(0,colorBlue,colorBlue- colorGreenCorrection));
 		x = innerRadius * cos(angle);
-		y = innerRadius * sin(angle); 
+		y = innerRadius * sin(angle);
 
 		mesh.addVertex(ofVec3f(x,y,0));
 		// adding the inner circle points to a vector because they need to be in reverse order.
 		innerCircleMeshOutline.push_back(ofVec3f(x,y,0));
-				
+
 		mesh.addColor(ofFloatColor(0,colorBlue ,colorBlue- colorGreenCorrection));
 
 	}
-	
-	std::reverse(innerCircleMeshOutline.begin(), innerCircleMeshOutline.end());	
-	meshOutline.addVertices(innerCircleMeshOutline);
-		
+
+	std::reverse(innerCircleMeshOutline.begin(), innerCircleMeshOutline.end());
+	for (auto inner : innerCircleMeshOutline)
+		meshOutline.addVertex(inner);
+
+
 }
 
 
@@ -65,12 +67,12 @@ void arc::draw(float rotation)
 {
 	glPushMatrix();
 
-	ofRotateZ(rotation * ((clockwise) ? 1 : -1));
+	ofRotateZDeg(rotation * ((clockwise) ? 1 : -1));
 
 	ofSetLineWidth(1);
 	ofSetColor(0, 60, 60);
-	meshOutline.drawFaces();	
-	
+	meshOutline.drawFaces();
+
 	ofSetLineWidth(0);
 	mesh.drawFaces();
 
